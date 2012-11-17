@@ -72,18 +72,81 @@ class BinaryTree {
 					}
 				} else {
 					/* two children */
-					if ( $curr->getData() < $parent->getData() ) { /* left side child */
-						
-					} elseif ( $curr->getData() > $parent->getData() ) { /* right side child */
-						
-					} else { /* the root element */
-						
+					$successor = $curr->rightChild;
+					while ( $successor ) {
+						if ( $successor->leftChild ) {
+							$successorParent = $successor;
+							$successor = $successor->leftChild;
+						} else {
+							break;
+						}
 					}
+					/* two special cases */
 					
+					if ( $curr->getData() < $parent->getData() ) { /* left side child */
+						/*if ( $successor === $curr->rightChild ) {
+							$parent->leftChild = $successor;
+							$successor->leftChild = $curr->leftChild;
+						} else {
+							$successorParent->leftChild = $successor->rightChild;
+							$successor->rightChild = $curr->rightChild;
+							$parent->leftChild = $successor;
+							$successor->leftChild = $curr->leftChild;
+						}*/
+						if ( $successor !== $curr->rightChild ) {
+							$successorParent->leftChild = $successor->rightChild;
+							$successor->rightChild = $curr->rightChild;
+						}
+						$parent->leftChild = $successor;
+						$successor->leftChild = $curr->leftChild;
+					} elseif ( $curr->getData() > $parent->getData() ) { /* right side child */
+						/*if ( $successor === $curr->rightChild ) {
+							$parent->rightChild = $successor;
+							$successor->leftChild = $curr->leftChild;
+						} else {
+							$successorParent->leftChild = $successor->rightChild;
+							$successor->rightChild = $curr->rightChild;
+							$parent->rightChild = $successor;
+							$successor->leftChild = $curr->leftChild;
+						}*/
+						if ( $successor !== $curr->rightChild ) {
+							$successorParent->leftChild = $successor->rightChild;
+							$successor->rightChild = $curr->rightChild;
+						}
+						$parent->rightChild = $successor;
+						$successor->leftChild = $curr->leftChild;
+					} else { /* the root element */
+						/*if ( $successor === $curr->rightChild ) {
+							$this->root = $successor;
+						} else {
+							$successorParent->leftChild = $successor->rightChild;
+							$successor->rightChild = $curr->rightChild;
+							$this->root = $successor;
+							$successor->leftChild = $curr->leftChild;
+							
+						}*/
+						if ( $successor !== $curr->rightChild ) {
+							$successorParent->leftChild = $successor->rightChild;
+							$successor->rightChild = $curr->rightChild;
+						}
+						$this->root = $successor;
+						$successor->leftChild = $curr->leftChild;
+					}
 				}
 			}
 			
 		}
+	}
+	private function getSuccessor( $curr ) {
+		$curr = $curr->rightChild;
+		while ( $curr ) {
+			if ( $curr->leftChild ) {
+				$curr = $curr->leftChild;
+			} else {
+				break;
+			}
+		}
+		return $curr;
 	}
 	public function traverseInOrder( $root ) {
 		if ( $root ) {
