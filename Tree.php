@@ -1,4 +1,7 @@
 <?php
+class BinaryTreeByArray {
+	
+}
 class BinaryTree {
 	private $root;
 	public function __construct( $root = null ) {
